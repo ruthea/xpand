@@ -29,4 +29,6 @@ optimizer_switch                	= 'extended_keys=ON'
 optimizer_switch                	= 'exists_to_in=ON'
 optimizer_switch                	= 'orderby_uses_equalities=ON'
 optimizer_switch                	= 'condition_pushdown_for_derived=ON'
+{% if mariadb_version|float > 10.2 %}
 optimizer_switch                	= 'split_materialized=ON'
+{% endif %}

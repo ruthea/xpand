@@ -37,7 +37,7 @@
       state: absent
 
   - name: "Installing New MariaDB Repo"
-    shell: curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version={{ mariadb_version }} --mariadb-maxscale-version={{ maxscale_version }}
+    shell: curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version=mariadb-{{ mariadb_version }} --mariadb-maxscale-version={{ maxscale_version }}
     args:
       warn: False
 
@@ -73,6 +73,7 @@
       packages:
       - MariaDB-server
       - MariaDB-rocksdb-engine
+      - MariaDB-backup
 
   - name: "Creating MySQL Log Directory"
     file:
