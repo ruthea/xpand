@@ -126,11 +126,6 @@
       name: test
       state: absent
 
-  - name: "Creating maxscale_schema Database"
-    mysql_db:
-      name: maxscale_schema
-      state: present
-
   - name: "Removing ''@'localhost'"
     mysql_user:
       name: ''
@@ -149,7 +144,7 @@
       host: '10.%'
       password: "{{ maxscale_pass }}"
       update_password: on_create
-      priv: '*.*:SUPER,RELOAD,REPLICATION CLIENT,REPLICATION SLAVE,SHOW DATABASES/mysql.db:SELECT/mysql.user:SELECT/mysql.tables_priv:SELECT/maxscale_schema.*:CREATE,INSERT,UPDATE,DELETE,SELECT'
+      priv: '*.*:SUPER,RELOAD,REPLICATION CLIENT,REPLICATION SLAVE,SHOW DATABASES/mysql.db:SELECT/mysql.user:SELECT/mysql.roles_mapping:SELECT/mysql.tables_priv:SELECT'
       state: present
 
   - name: "Adding SST/Mariabackup User"
