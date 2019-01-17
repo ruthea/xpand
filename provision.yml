@@ -31,11 +31,6 @@
       value: 1
       state: present
 
-  - name: "Removing Any Previous MariaDB Repo"
-    file:
-      path: /etc/yum.repos.d/mariadb.repo
-      state: absent
-
   - name: "Installing New MariaDB Repo"
     shell: curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version=mariadb-{{ mariadb_version }} --mariadb-maxscale-version={{ maxscale_version }}
     args:
