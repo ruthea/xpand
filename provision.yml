@@ -15,6 +15,10 @@
       - libselinux-python
       - libselinux-python
 
+  - name: "Installing epel repo"
+    shell: rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    args:
+      warn: False
   
   - name: "Setting Selinux To Permissive"
     selinux:
