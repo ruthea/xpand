@@ -6,7 +6,7 @@
 
   tasks:
   - name: "Install libselinux-python on all servers"
-      yum:
+    yum:
       name: "{{ packages }}"
       state: present
     vars:
