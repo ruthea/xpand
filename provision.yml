@@ -5,7 +5,17 @@
   become_user: root
 
   tasks:
+  - name: "Install libselinux-python on all servers"
+      yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - libselinux-python
+      - libselinux-python
+      - libselinux-python
 
+  
   - name: "Setting Selinux To Permissive"
     selinux:
       policy: targeted
