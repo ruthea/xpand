@@ -9,7 +9,7 @@ DBHOSTS='10.0.2.20'  # Example of sysbench spreading connections
 # Database credentials
 DBNAME=sysbench
 DBUSER=dba
-DBPASSWORD=dba_password
+DBPASSWORD=demo_password
 
 # Benchmark Configuration
 DBTABLESIZE=100000
