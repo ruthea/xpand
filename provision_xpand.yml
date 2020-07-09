@@ -66,6 +66,7 @@
       state: present
     vars:
       packages:
+      - wget
       - nano
       - epel-release
       - pigz
