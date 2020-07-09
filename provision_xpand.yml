@@ -157,13 +157,13 @@
 
   tasks:
 
-- name: "Installing bzip2"
-  yum:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-    - bzip2
+  - name: "Installing bzip2"
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - bzip2
 
 - hosts: "mariadb2,mariadb3"
   become: True
