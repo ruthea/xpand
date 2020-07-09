@@ -151,6 +151,20 @@
       enabled: yes
       state: restarted
 
+- hosts: xpand
+  become: True
+  become_user: root
+
+  tasks:
+
+- name: "Installing bzip2"
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - bzip2
+
 - hosts: "mariadb2,mariadb3"
   become: True
   become_user: root
