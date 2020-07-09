@@ -84,10 +84,6 @@
       packages:
       - nano
 
-  - name: "Uncompress Xpand"
-    command: tar -xvzf 
-
-
 
 - hosts: "mariadb"
   become: True
