@@ -66,10 +66,8 @@
       state: present
     vars:
       packages:
-      - MariaDB-client
       - nano
       - epel-release
-      - MySQL-python
       - pigz
       - socat
 
