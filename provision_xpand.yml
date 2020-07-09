@@ -160,6 +160,8 @@
     vars:
       packages:
       - bzip2
+  - name: "Uncompressing Xpand binaries"
+    command: tar -xvf /tmp/clustrix-9.3*.bz2
 
 - hosts: "mariadb2,mariadb3"
   become: True
