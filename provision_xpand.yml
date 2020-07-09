@@ -104,7 +104,7 @@
 
   - name: "Creating/Updating server.cnf"
     template:
-      src: templates/general.j2
+      src: templates/general_xpand.j2
       dest: /etc/my.cnf.d/server.cnf
 
   - name: "Installing/Updating timeouts.conf Template"
