@@ -1,0 +1,30 @@
+[xpand]
+xpand1 ansible_host=10.0.2.11 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+xpand2 ansible_host=10.0.3.11 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+xpand3 ansible_host=10.0.4.11 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[mariadb]
+mariadb1 ansible_host=10.0.2.10 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+mariadb2 ansible_host=10.0.3.10 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+mariadb3 ansible_host=10.0.4.10 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[maxscale]
+maxscale1 ansible_host=10.0.2.20 ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/test.pem ansible_ssh_common_args="-o StrictHostKeyChecking=no"
+
+[all:vars]
+mariadb_version=10.3
+maxscale_version=2.3
+encryption_on=false
+replication_on=true
+galera_on=false
+galera_name=galera_cluster
+ethernet_interface=eth0
+volume_iops=1000
+dba_user=dba
+dba_pass=demo_password
+repli_user=repli
+repli_pass=demo_password
+sst_user=sst
+sst_pass=demo_password
+maxscale_user=maxscale
+maxscale_pass=demo_password
