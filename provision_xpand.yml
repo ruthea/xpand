@@ -85,6 +85,15 @@
       packages:
       - MariaDB-xpand-engine
 
+   - name: Insert a line at the end of a file.
+     blockinfile:
+      dest: /etc/my.cnf.d/xpand.cnf
+      block: |
+       plugin-maturity=beta
+       xpand_hosts=10.0.2.11,10.0.3.11,10.0.4.11
+       xpand_port=3306
+       xpand_username=root
+
   - name: "Creating MySQL Log Directory"
     file:
       path: /var/log/mysql
