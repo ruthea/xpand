@@ -69,6 +69,13 @@
       - epel-release
       - pigz
       - socat
+      - python2
+      - python3
+
+  - name: "Installing PyMySQL Module"
+    pip:
+      name: PyMySQL
+
 
 - hosts: "xpand"
   become: True
