@@ -229,11 +229,8 @@
       - bzip2
     
   - name: Uncompressing Xpand binaries
-    unarchive:
-      src: /tmp/clustrix-9.3*.bz2
-      dest: /tmp
-      remote_src: True
-      
+    command: tar xvf /tmp/clustrix-9.3_beta_6.el7.tar.bz2 -C /tmp
+    
   - name: "Startng Xpand"
     command: /tmp/clxnode_install.py --yes
 
