@@ -232,6 +232,17 @@
       dest: /tmp
       remote_src: True
 
+- hosts: "xpand1"
+  become: True
+  become_user: root
+  vars_files:
+    - 'variables.yml'
+
+  - name: "Copying xpand.key"
+    template:
+      src: /tmp/xpand.key
+      dest: /tmp/xpand.key
+
 - hosts: "mariadb2,mariadb3"
   become: True
   become_user: root
