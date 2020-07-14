@@ -232,7 +232,7 @@
     command: tar xvf /tmp/clustrix-9.3_beta_6.el7.tar.bz2 -C /tmp
     
   - name: "Startng Xpand"
-    command: /tmp/clxnode_install.py --yes
+    command: /tmp/clustrix-9.3_beta_6.el7/clxnode_install.py --yes
 
 
 - hosts: "xpand1"
