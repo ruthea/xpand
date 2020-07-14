@@ -132,6 +132,57 @@
       src: templates/timeouts.j2
       dest: /etc/systemd/system/mariadb.service.d/timeouts.conf
 
+
+  - name: "Removing 'Test' Database If Exists"
+    mysql_db:
+      name: test
+      state: absent
+      login_unix_socket: '/var/lib/mysql/mysql.sock'
+
+  - name: "Adding {{ cej_user }}@localhost User To Database"
+    mysql_user:
+      name: 'demouser'
+      host: 'localhost'
+      password: 'demopassword'
+      update_password: on_create
+      priv: '*.*:SELECT'
+      state: present
+      login_unix_socket: '/var/lib/mysql/mysql.sock'
+    no_log: true
+
+  - name: "Adding {{ cej_user }}@10.% User To Database"
+    mysql_user:
+      name: 'demouser'
+      host: '10.%'
+      password: 'demopassword'
+      update_password: on_create
+      priv: '*.*:SELECT'
+      state: present
+      login_unix_socket: '/var/lib/mysql/mysql.sock'
+    no_log: true
+
+  - name: "Adding '{{ repli_user }}'@'%'"
+    mysql_user:
+      name: 'repuser'
+      host: '%'
+      password: 'reppassword'
+      update_password: on_create
+      priv: '*.*:REPLICATION CLIENT,REPLICATION SLAVE'
+      state: present
+      login_unix_socket: '/var/lib/mysql/mysql.sock'
+    no_log: true
+
+  - name: "Adding '{{ repli_user }}'@'localhost'"
+    mysql_user:
+      name: 'repuser'
+      host: 'localhost'
+      password: 'reppassword'
+      update_password: on_create
+      priv: '*.*:REPLICATION CLIENT,REPLICATION SLAVE'
+      state: present
+      login_unix_socket: '/var/lib/mysql/mysql.sock'
+    no_log: true
+
   - name: "Reloading Systemd"
     command: systemctl daemon-reload
 
