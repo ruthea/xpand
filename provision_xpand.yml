@@ -246,6 +246,7 @@
   vars_files:
     - 'variables.yml'
 
+  tasks:
   - name: "Copying xpand.key"
     template:
       src: /tmp/xpand.key
