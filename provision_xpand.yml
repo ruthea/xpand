@@ -6,7 +6,6 @@
   vars_files:
     - 'variables.yml'
 
-
   tasks:
   - name: "Install libselinux-python on all servers"
     yum:
@@ -50,11 +49,6 @@
       name: vm.swappiness
       value: 1
       state: present
-
-  - name: "Installing New MariaDB Repo"
-    template:
-      src: /tmp/MariaDB_xpand.repo
-      dest: /etc/yum.repos.d/MariaDB_xpand.repo
 
   - name: "Upgrading All Packages"
     yum:
@@ -101,6 +95,11 @@
   become_user: root
 
   tasks:
+
+  - name: "Installing New MariaDB Repo"
+    template:
+      src: /tmp/MariaDB_xpand.repo
+      dest: /etc/yum.repos.d/MariaDB_xpand.repo
 
   - name: "Installing MariaDB Server"
     yum:
