@@ -227,8 +227,6 @@
     vars:
       packages:
       - bzip2
-  - name: Downloading Xpand
-    command: wget -P /tmp https://files.clustrix.com/releases/software/clustrix-9.3_beta_6.el7.tar.bz2
     
   - name: Uncompressing Xpand binaries
     unarchive:
