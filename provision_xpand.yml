@@ -142,7 +142,7 @@
       name: mariadb
       state: restarted
       enabled: yes
-- name: "Removing 'Test' Database If Exists"
+  - name: "Removing 'Test' Database If Exists"
     mysql_db:
       name: test
       state: absent
