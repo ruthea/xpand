@@ -12,14 +12,17 @@
     vars:
       packages:
       - libselinux-python
-      - libselinux-python
-      - libselinux-python
-
+      
   - name: "Installing epel repo"
     shell: rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     args:
       warn: False
-  
+
+  - name: "Removing mariadb-libs"
+    yum:
+      name: 'mariadb-libs'
+      state: absent
+
   - name: "Setting Selinux To Permissive"
     selinux:
       policy: targeted
@@ -49,11 +52,6 @@
     template:
       src: /tmp/MariaDB_xpand.repo
       dest: /etc/yum.repos.d/MariaDB_xpand.repo
-
-  - name: "Removing mariadb-libs"
-    yum:
-      name: 'mariadb-libs'
-      state: absent
 
   - name: "Upgrading All Packages"
     yum:
