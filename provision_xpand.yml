@@ -229,7 +229,7 @@
       
   - name: Uncompressing Xpand binaries
     unarchive:
-      src: /tmp/clustrix-9.3*.bz2
+      remote_src: /tmp/clustrix-9.3*.bz2
       dest: /tmp
 
 - hosts: "mariadb2,mariadb3"
