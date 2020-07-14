@@ -3,3 +3,4 @@ demo_pass: Demopassword@1
 repli_user: replica
 repli_pass: Demopassword@1
 mariadb_socket: /var/lib/mysql/mysql.sock
+mdb1: 10.0.2.10
