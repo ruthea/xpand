@@ -163,7 +163,7 @@
     mysql_user:
       name: '{{ demo_user }}'
       host: '10.%'
-      password: '{{ cej_pass }}'
+      password: '{{ demo_pass }}'
       update_password: on_create
       priv: '*.*:SELECT'
       state: present
