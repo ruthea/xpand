@@ -142,55 +142,54 @@
       name: mariadb
       state: restarted
       enabled: yes
-
-  - name: "Removing 'Test' Database If Exists"
+- name: "Removing 'Test' Database If Exists"
     mysql_db:
       name: test
       state: absent
-      login_unix_socket: '/var/lib/mysql/mysql.sock'
+      login_unix_socket: '{{ mariadb_socket }}'
 
-  - name: "Adding {{ cej_user }}@localhost User To Database"
+  - name: "Adding {{ demo_user }}@localhost User To Database"
     mysql_user:
-      name: 'demouser'
+      name: '{{ demo_user }}'
       host: 'localhost'
-      password: 'demopassword'
+      password: '{{ demo_pass }}'
       update_password: on_create
       priv: '*.*:SELECT'
       state: present
-      login_unix_socket: '/var/lib/mysql/mysql.sock'
+      login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
-  - name: "Adding demouser@10.% User To Database"
+  - name: "Adding {{ demo_user }}@10.% User To Database"
     mysql_user:
-      name: 'demouser'
+      name: '{{ demo_user }}'
       host: '10.%'
-      password: 'demopassword'
+      password: '{{ cej_pass }}'
       update_password: on_create
       priv: '*.*:SELECT'
       state: present
-      login_unix_socket: '/var/lib/mysql/mysql.sock'
+      login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
-  - name: "Adding 'repuser'@'%'"
+  - name: "Adding '{{ repli_user }}'@'%'"
     mysql_user:
-      name: 'repuser'
+      name: '{{ repli_user }}'
       host: '%'
-      password: 'reppassword'
+      password: '{{ repli_pass }}'
       update_password: on_create
       priv: '*.*:REPLICATION CLIENT,REPLICATION SLAVE'
       state: present
-      login_unix_socket: '/var/lib/mysql/mysql.sock'
+      login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
   - name: "Adding '{{ repli_user }}'@'localhost'"
     mysql_user:
-      name: 'repuser'
+      name: '{{ repli_user }}'
       host: 'localhost'
-      password: 'reppassword'
+      password: '{{ repli_pass }}'
       update_password: on_create
       priv: '*.*:REPLICATION CLIENT,REPLICATION SLAVE'
       state: present
-      login_unix_socket: '/var/lib/mysql/mysql.sock'
+      login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
   - name: "Reloading Systemd"
