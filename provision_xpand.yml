@@ -134,6 +134,11 @@
       src: templates/timeouts.j2
       dest: /etc/systemd/system/mariadb.service.d/timeouts.conf
 
+  - name: "Enabling MariaDB Server"
+    systemd:
+      name: mariadb
+      state: restarted
+      enabled: yes
 
   - name: "Removing 'Test' Database If Exists"
     mysql_db:
@@ -152,7 +157,7 @@
       login_unix_socket: '/var/lib/mysql/mysql.sock'
     no_log: true
 
-  - name: "Adding {{ cej_user }}@10.% User To Database"
+  - name: "Adding demouser@10.% User To Database"
     mysql_user:
       name: 'demouser'
       host: '10.%'
@@ -163,7 +168,7 @@
       login_unix_socket: '/var/lib/mysql/mysql.sock'
     no_log: true
 
-  - name: "Adding '{{ repli_user }}'@'%'"
+  - name: "Adding 'repuser'@'%'"
     mysql_user:
       name: 'repuser'
       host: '%'
