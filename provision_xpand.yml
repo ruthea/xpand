@@ -93,6 +93,8 @@
 - hosts: "mariadb"
   become: True
   become_user: root
+  vars_files:
+    - 'variables.yml'
 
   tasks:
 
