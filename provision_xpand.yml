@@ -227,10 +227,10 @@
       packages:
       - bzip2
       
-- name: Uncompressing Xpand binaries
-  unarchive:
-    src: /tmp/clustrix-9.3*.bz2
-    dest: /tmp
+  - name: Uncompressing Xpand binaries
+    unarchive:
+      src: /tmp/clustrix-9.3*.bz2
+      dest: /tmp
 
 - hosts: "mariadb2,mariadb3"
   become: True
