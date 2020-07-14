@@ -71,6 +71,8 @@
       - socat
       - python2
       - python3
+      - python2-pip
+      - python3-pip
 
   - name: "Installing PyMySQL Module"
     pip:
