@@ -251,14 +251,9 @@
   become_user: root
   vars_files:
     - 'variables.yml'
-    - 'file_variables.yml'
+    - '/tmp/file_variables.yml'
 
-  tasks:
-  - name: "Copying xpand.key"
-    template:
-      src: /tmp/xpand.key
-      dest: /tmp/xpand.key
-      
+  tasks:  
   - name: "Install key"
     command: mysql -e "SET GLOBAL license = {{ xpand_key }}"
     
