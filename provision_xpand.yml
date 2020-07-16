@@ -217,6 +217,8 @@
 - hosts: xpand
   become: True
   become_user: root
+  vars_files:
+    - '/tmp/file_variables.yml'
 
   tasks:
 
@@ -227,10 +229,14 @@
     vars:
       packages:
       - bzip2
-    
-  - name: Uncompressing Xpand binaries
-    command: tar xvf /tmp/clustrix-9.3_beta_6.el7.tar.bz2 -C /tmp
-    
+
+  - name: "Downloading Xpand"
+    get_url:
+     url: {{ xpand_url }}
+     dest: /tmp/xpand.
+     mode: '0440'
+
+
   - name: "Startng Xpand"
     command: /tmp/clustrix-9.3_beta_6.el7/clxnode_install.py --yes
 
