@@ -269,6 +269,12 @@
     - 'variables.yml'
 
   tasks:
+  - name: "Starting MariaDB on Replicas"
+    systemd:
+      name: mysql
+      enabled: yes
+      state: restarted
+
   - name: "Setting Replicas Read Only"
     mysql_variables:
       variable: read_only
