@@ -232,9 +232,9 @@
 
   - name: "Downloading Xpand"
     get_url:
-     url: {{ xpand_url }}
-     dest: /tmp/xpand.tar.bz2
-     mode: '0777'
+      url: "{{ xpand_url }}"
+      dest: /tmp/xpand.tar.bz2
+      mode: '0777'
 
     
   - name: Uncompressing Xpand binaries
