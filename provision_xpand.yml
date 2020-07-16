@@ -241,9 +241,7 @@
     command: tar xvf /tmp/xpand.tar.bz2 -C /tmp
     
   - name: "Startng Xpand"
-    command: /tmp/clustrix-9.3_beta_6.el7/clxnode_install.py --yes
-     args:
-      chdir: /tmp/clustrix-9.3_beta_6.el7
+    command: chdir=/tmp/clustrix-9.3_beta_6.el7 clxnode_install.py --yes
 
   - name: "Granting remote access"
     command: mysql -e "grant all on *.* to 'root'@'%';"
