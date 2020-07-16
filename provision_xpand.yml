@@ -243,6 +243,8 @@
   - name: "Startng Xpand"
     command: /tmp/clustrix-9.3_beta_6.el7/clxnode_install.py --yes
 
+  - name: "Granting remote access"
+    command: mysql -e "grant all on *.* to 'root'@'%';"
 
 - hosts: "xpand1"
   become: True
@@ -255,6 +257,10 @@
     template:
       src: /tmp/xpand.key
       dest: /tmp/xpand.key
+  - name: "Install key"
+    vars_files:
+      - 'file_variables.yml'
+    command: mysql -e "SET GLOBAL license = {{ xpand_key }}"
 
 - hosts: "mariadb2,mariadb3"
   become: True
