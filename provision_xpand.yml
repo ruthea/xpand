@@ -242,6 +242,8 @@
     
   - name: "Startng Xpand"
     command: /tmp/clustrix-9.3_beta_6.el7/clxnode_install.py --yes
+     args:
+      chdir: /tmp/clustrix-9.3_beta_6.el7
 
   - name: "Granting remote access"
     command: mysql -e "grant all on *.* to 'root'@'%';"
