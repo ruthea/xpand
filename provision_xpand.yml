@@ -233,10 +233,13 @@
   - name: "Downloading Xpand"
     get_url:
      url: {{ xpand_url }}
-     dest: /tmp/xpand.
-     mode: '0440'
+     dest: /tmp/xpand.tar.bz2
+     mode: '0777'
 
-
+    
+  - name: Uncompressing Xpand binaries
+    command: tar xvf /tmp/xpand.tar.bz2 -C /tmp
+    
   - name: "Startng Xpand"
     command: /tmp/clustrix-9.3_beta_6.el7/clxnode_install.py --yes
 
