@@ -261,6 +261,9 @@
     vars_files:
       - 'file_variables.yml'
     command: mysql -e "SET GLOBAL license = {{ xpand_key }}"
+    
+  - name: "Add xpand1 and xpand2 to cluster"
+    command: mysql -e "ALTER CLUSTER ADD '10.0.3.11', '10.0.4.11';"
 
 - hosts: "mariadb2,mariadb3"
   become: True
