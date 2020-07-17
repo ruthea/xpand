@@ -260,7 +260,7 @@
       dest: /tmp/xpand.key
       
   - name: "Install key"
-    command: mysql < /tmp/xpand.key
+    command: mysql test < /tmp/xpand.key
     
   - name: "Add xpand1 and xpand2 to cluster"
     command: mysql -e "ALTER CLUSTER ADD '10.0.3.11', '10.0.4.11';"
