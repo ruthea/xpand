@@ -258,6 +258,10 @@
     template:
       src: /tmp/xpand.key
       dest: /tmp/xpand.key
+  - name: "Copy in xpand add license script"
+    template:
+      src: /tmp/addlicense.sh
+      dest: /tmp/addlicense.sh
       
   - name: "Install key"
     command: sh /tmp/addlicense.sh
