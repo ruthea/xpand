@@ -254,8 +254,13 @@
     - '/tmp/file_variables.yml'
 
   tasks:  
+  - name: "Copy in xpand license"
+    template:
+      src: /tmp/xpand.key
+      dest: /tmp/xpand.key
+      
   - name: "Install key"
-    command: mysql -e "SET GLOBAL license = {{ xpand_key }}"
+    command: mysql < /tmp/xpand.key
     
   - name: "Add xpand1 and xpand2 to cluster"
     command: mysql -e "ALTER CLUSTER ADD '10.0.3.11', '10.0.4.11';"
