@@ -63,7 +63,7 @@ max_heap_table_size             	= {{ [(ansible_memtotal_mb/512),16]|max|round|i
 ################################################################
 # MySQL Logs
 ################################################################
-binlog_format                   	= ROW
+binlog_format                   	= STATEMENT
 binlog_row_image                	= FULL
 sync_binlog                     	= 0
 log_bin                         	= /var/lib/mysql/log/mariadb-bin
