@@ -63,12 +63,12 @@ max_heap_table_size             	= {{ [(ansible_memtotal_mb/512),16]|max|round|i
 ################################################################
 # MySQL Logs
 ################################################################
-binlog_format                   	= STATEMENT
-binlog_row_image                	= FULL
-sync_binlog                     	= 0
-log_bin                         	= /var/lib/mysql/log/mariadb-bin
-log_bin_index                   	= /var/lib/mysql/log/mariadb-bin.index
-expire_logs_days                	= 3
+#binlog_format                   	= STATEMENT
+#binlog_row_image                	= FULL
+#sync_binlog                     	= 0
+#log_bin                         	= /var/lib/mysql/log/mariadb-bin
+#log_bin_index                   	= /var/lib/mysql/log/mariadb-bin.index
+#expire_logs_days                	= 3
 log_error                       	= /var/lib/mysql/log/mariadb-error.log
 slow_query_log                  	= ON
 slow_query_log_file             	= /var/lib/mysql/log/mariadb-slow.log
