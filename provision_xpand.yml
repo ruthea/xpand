@@ -264,15 +264,15 @@
   tasks:  
   - name: "Copy in sysbench_helper"
     template:
-      src: /tmp/standard_replication/sysbench_helper
+      src: /tmp/standard_replication/sysbench/sysbench_helper
       dest: /tmp/sysbench_helper
   - name: "Copy in mdb sysbench_helper"
     template:
-      src: /tmp/standard_replication/mdb
+      src: /tmp/standard_replication/sysbench/mdb
       dest: /tmp/mdb
   - name: "Copy in xpand sysbench_helper"
     template:
-      src: /tmp/standard_replication/xpand
+      src: /tmp/standard_replication/sysbench/xpand
       dest: /tmp/xpand
 
 - hosts: "xpand1"
