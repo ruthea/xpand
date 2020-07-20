@@ -98,9 +98,10 @@
 
   tasks:
   - name: "Download MariaDB ES Repo setup"
-      get_url:
+    get_url:
       url: "{{ mariadbrepo_url }}"
       dest: /tmp/mariadb_es_repo_setup
+      mode: '0777'
 
   - name: "Set ES repo setup to executable"
       file:
