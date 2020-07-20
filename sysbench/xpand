@@ -3,13 +3,13 @@
 # -------- Modify the variables below to suit your environment --------- #
 
 # Database host info
-DBHOSTS='server-1,server-2,server-3'  # Example of sysbench spreading connections
+DBHOSTS='10.0.2.11,10.0.3.11,10.0.4.11'  # Example of sysbench spreading connections
 #DBHOSTS=load.balancer.host            # Example of load balancer
 
 # Database credentials
 DBNAME=sysbench
-DBUSER=sysbench
-DBPASSWORD=sysbench
+DBUSER=root
+DBPASSWORD=
 
 # Benchmark Configuration
 DBTABLESIZE=100000
