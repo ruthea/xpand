@@ -111,7 +111,7 @@
       mode: 0755
 
   - name: "Install MariaDB ES Repo"
-      shell: /tmp/mariadb_es_repo_setup --token={{ customer_token }} --apply --mariadb-server-version="10.5"
+    shell: /tmp/mariadb_es_repo_setup --token={{ customer_token }} --apply --mariadb-server-version="10.5"
 
   - name: "Installing MariaDB Server"
     yum:
