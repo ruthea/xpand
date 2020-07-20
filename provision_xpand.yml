@@ -97,6 +97,20 @@
     - 'variables.yml'
 
   tasks:
+  - name: "Download MariaDB ES Repo setup"
+      get_url:
+      url: "{{ mariadbrepo_url }}"
+      dest: /tmp/mariadb_es_repo_setup
+
+  - name: "Set ES repo setup to executable"
+      file:
+      path: /tmp/mariadb_es_repo_setup
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: "Install MariaDB ES Repo"
+      shell: /tmp/mariadb_es_repo_setup --token={{ customer_token }} --apply --mariadb-server-version="10.5"
 
   - name: "Installing New MariaDB Repo"
     template:
