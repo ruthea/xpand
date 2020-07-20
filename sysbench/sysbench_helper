@@ -1,0 +1,184 @@
+#!/bin/bash
+
+# -------- Modify the variables below to suit your environment --------- #
+
+# Database host info
+DBHOSTS='server-1,server-2,server-3'  # Example of sysbench spreading connections
+#DBHOSTS=load.balancer.host            # Example of load balancer
+
+# Database credentials
+DBNAME=sysbench
+DBUSER=sysbench
+DBPASSWORD=sysbench
+
+# Benchmark Configuration
+DBTABLESIZE=100000
+DBTHREADS=200
+REPORT_INTERVAL_SECS=10
+MAXTIME=3600
+
+
+
+# -------------------------------------------------------------- #
+# -------- Script below should not need to be modified --------- #
+# -------------------------------------------------------------- #
+# SYSBENCH_BIN=./sysbench.1
+SYSBENCH_VERSION="sysbench 1.0"
+
+function usage {
+  echo
+  echo  "Usage:  ${0} run | prepare | drop"
+  echo
+}
+
+function build_sysbench {
+   echo "Installing sysbench"
+   curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash
+   sudo yum -y install sysbench
+   sysbench --version
+}
+
+function ensure_prereqs {
+   # Check sudo privs
+   if ! sudo -v  # lacks sudo privs
+   then 
+      echo
+      echo "You need to run this script as a user with sudo privileges (or as the root user)"
+      echo 
+      exit 1
+   fi
+
+
+   # Build sysbench if it's not installed, or the right version
+   if [[ `sysbench --version` != ${SYSBENCH_VERSION}* ]]; then 
+      build_sysbench
+   fi
+
+   # Check again, if fails, the it didn't install properly
+   if [[ `sysbench --version` != ${SYSBENCH_VERSION}* ]]; then 
+      echo "Uh-oh, sysbench didn't install correctly"
+      echo "We need to exit since the rest of the helper script won't work until"
+      echo "sysbench is working as expected."
+      echo
+      echo "Try running:"
+      echo "   $ sysbench --version"
+      echo
+      echo "It should output: sysbench ${SYSBENCH_VERSION}"
+      exit 1
+   fi   
+
+   # Install mysql if not installed
+   mysql --version &>/dev/null
+   if [[ $? -gt 1 ]]; then
+      sudo yum -y install mysql
+   fi
+
+   # Check again, if fails, then it didn't install properly
+   mysql --version &>/dev/null
+   if [[ $? -gt 1 ]]; then
+      echo "Uh-oh, the mysql client didn't install properly"
+      echo "We need to exit since the rest of the script won't work until"
+      echo "that is resolved"
+      echo
+      echo "Try running: "
+      echo "   $ mysql --version"
+      echo
+      echo "It should output a version string if the mysql client is working properly"
+   fi
+
+   ulimit -n $(( ${DBTHREADS} + 1024 ))
+
+}
+
+ensure_prereqs
+
+DBHOST=`echo ${DBHOSTS} | cut -d ',' -f1`
+
+case "$1" in
+
+   prepare)    # Load the database
+
+      echo "Creating ${DBNAME} database"
+      mysql --host=${DBHOST} --user=${DBUSER} --password=${DBPASSWORD} -e "CREATE DATABASE ${DBNAME}"
+      echo "Loading data..."
+
+      sysbench oltp_read_write \
+      --mysql-host=${DBHOSTS} --mysql-port=3306 \
+      --mysql-user=${DBUSER} --mysql-password=${DBPASSWORD} \
+      --mysql-db=${DBNAME} --db-driver=mysql \
+      --table-size=${DBTABLESIZE} \
+      prepare 
+      ;;
+
+   run)     # Run 9010 Mix
+      
+      if [[ $# -gt 1 ]]; then
+         DBTHREADS=$2
+      fi
+
+      if [[ $# -gt 2 ]]; then
+         MAXTIME=$3
+      fi
+
+      sysbench oltp_read_write --threads=${DBTHREADS} --table-size=${DBTABLESIZE} \
+      --point-selects=9 --range-selects=false --index-updates=0 --non-index-updates=1 --delete-inserts=0 \
+      --mysql-db=${DBNAME} --db-driver=mysql  \
+      --mysql-host=${DBHOSTS} --mysql-port=3306 --mysql-user=${DBUSER} --mysql-password=${DBPASSWORD} \
+      --max-requests=0 --time=${MAXTIME} --report-interval=${REPORT_INTERVAL_SECS} \
+      --mysql-ignore-errors=all \
+      run
+      ;;
+
+
+   run_100_read)     # Run 100% reads
+      
+      if [[ $# -gt 1 ]]; then
+         DBTHREADS=$2
+      fi
+
+      if [[ $# -gt 2 ]]; then
+         MAXTIME=$3
+      fi
+
+      sysbench oltp_read_write --threads=${DBTHREADS} --table-size=${DBTABLESIZE} \
+      --point-selects=10 --range-selects=false --index-updates=0 --non-index-updates=0 --delete-inserts=0 \
+      --mysql-db=${DBNAME} --db-driver=mysql  \
+      --mysql-host=${DBHOSTS} --mysql-port=3306 --mysql-user=${DBUSER} --mysql-password=${DBPASSWORD} \
+      --max-requests=0 --time=${MAXTIME} --report-interval=${REPORT_INTERVAL_SECS} \
+      --mysql-ignore-errors=all \
+      run
+      ;;
+
+   run_100_write)     # Run 100% writes
+      
+      if [[ $# -gt 1 ]]; then
+         DBTHREADS=$2
+      fi
+
+      if [[ $# -gt 2 ]]; then
+         MAXTIME=$3
+      fi
+
+      sysbench oltp_read_write --threads=${DBTHREADS} --table-size=${DBTABLESIZE} \
+      --point-selects=0 --range-selects=false --index-updates=0 --non-index-updates=10 --delete-inserts=0 \
+      --mysql-db=${DBNAME} --db-driver=mysql  \
+      --mysql-host=${DBHOSTS} --mysql-port=3306 --mysql-user=${DBUSER} --mysql-password=${DBPASSWORD} \
+      --max-requests=0 --time=${MAXTIME} --report-interval=${REPORT_INTERVAL_SECS} \
+      --mysql-ignore-errors=all \
+      run
+      ;;
+
+   drop)
+      echo "Dropping database ${DBNAME}"
+      mysql --host=${DBHOST} --user=${DBUSER} --password=${DBPASSWORD} -e "DROP DATABASE ${DBNAME}" 
+      ;;
+
+
+   *)
+      usage
+      exit 1
+      ;;
+esac
+
+
+
