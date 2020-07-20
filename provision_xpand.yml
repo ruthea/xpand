@@ -256,6 +256,24 @@
   - name: "Granting remote access"
     command: mysql -e "grant all on *.* to 'root'@'%';"
 
+- hosts: loadtest
+  become: True
+  become_user: root
+
+  tasks:  
+  - name: "Copy in sysbench_helper"
+    template:
+      src: /tmp/standard_replication/sysbench_helper
+      dest: /tmp/sysbench_helper
+  - name: "Copy in mdb sysbench_helper"
+    template:
+      src: /tmp/standard_replication/mdb
+      dest: /tmp/mdb
+  - name: "Copy in xpand sysbench_helper"
+    template:
+      src: /tmp/standard_replication/xpand
+      dest: /tmp/xpand
+
 - hosts: "xpand1"
   become: True
   become_user: root
