@@ -112,11 +112,6 @@
   - name: "Install MariaDB ES Repo"
       shell: /tmp/mariadb_es_repo_setup --token={{ customer_token }} --apply --mariadb-server-version="10.5"
 
-  - name: "Installing New MariaDB Repo"
-    template:
-      src: /tmp/MariaDB_xpand.repo
-      dest: /etc/yum.repos.d/MariaDB_xpand.repo
-
   - name: "Installing MariaDB Server"
     yum:
       name: "{{ packages }}"
