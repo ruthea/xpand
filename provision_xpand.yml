@@ -104,7 +104,7 @@
       mode: '0777'
 
   - name: "Set ES repo setup to executable"
-      file:
+    file:
       path: /tmp/mariadb_es_repo_setup
       owner: root
       group: root
