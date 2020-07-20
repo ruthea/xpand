@@ -95,6 +95,7 @@
   become_user: root
   vars_files:
     - 'variables.yml'
+    - '/tmp/file_variables.yml'
 
   tasks:
   - name: "Download MariaDB ES Repo setup"
