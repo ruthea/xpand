@@ -207,19 +207,7 @@
   - name: "Reloading Systemd"
     command: systemctl daemon-reload
 
-  - name: "Stopping MariaDB"
-    systemd:
-      name: mysql
-      enabled: yes
-      state: stopped
-
-- hosts: "mariadb1"
-  become: True
-  become_user: root
-
-  tasks:
-
-  - name: "Starting MariaDB on Master"
+  - name: "Starting MariaDB on all nodes"
     systemd:
       name: mysql
       enabled: yes
@@ -303,52 +291,3 @@
     
   - name: "Add xpand1 and xpand2 to cluster"
     command: mysql -e "ALTER CLUSTER ADD '10.0.3.11', '10.0.4.11';"
-
-- hosts: "mariadb2,mariadb3"
-  become: True
-  become_user: root
-  vars_files:
-    - 'variables.yml'
-
-  tasks:
-  - name: "Starting MariaDB on Replicas"
-    systemd:
-      name: mysql
-      enabled: yes
-      state: restarted
-
-  - name: "Setting Replicas Read Only"
-    mysql_variables:
-      variable: read_only
-      value: '1'
-      login_unix_socket: '{{ mariadb_socket }}'
-
-  - name: "Stopping Replicas"
-    mysql_replication:
-      mode: stopslave
-      login_unix_socket: '{{ mariadb_socket }}'
-
-  - name: "Setting Primary Info"
-    mysql_replication:
-      mode: changemaster
-      master_host: '{{ mdb1 }}'
-      master_user: '{{ repli_user }}'
-      master_password: '{{ repli_pass }}'
-      login_unix_socket: '{{ mariadb_socket }}'
-
-  - name: "Converting to MariaDB GTID"
-    command: mysql -e "CHANGE MASTER TO master_use_gtid=slave_pos";
-
-  - name: "Starting Replicas"
-    mysql_replication:
-      mode: startslave
-      login_unix_socket: '{{ mariadb_socket }}'
-
-
-
-
-  - name: "Starting MariaDB on Slaves"
-    systemd:
-      name: mysql
-      enabled: yes
-      state: restarted
