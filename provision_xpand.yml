@@ -90,7 +90,7 @@
       - nano
 
 
-- hosts: "mariadb"
+- hosts: "xpand"
   become: True
   become_user: root
   vars_files:
