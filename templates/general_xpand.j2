@@ -2,24 +2,24 @@
 # General Settings
 ###############################################################
 [client-server]
-socket                          	= /var/lib/mariadb/mysql.sock
+socket                          	= /var/lib/mysql/mysql.sock
 
 [mysql]
 port                            	= 3306
-socket                          	= /var/lib/mariadb/mysql.sock
+socket                          	= /var/lib/mysql/mysql.sock
 default_character_set           	= utf8
 
 [mysqld_safe]
 basedir                         	= /usr/
-pid-file                        	= /var/lib/mariadb/mysql.pid
+pid-file                        	= /var/lib/mysql/mysql.pid
 
 [mysqld]
 basedir                         	= /usr/
-datadir                         	= /var/lib/mariadb
+datadir                         	= /var/lib/mysql
 tmpdir                          	= /tmp
-socket                          	= /var/lib/mariadb/mysql.sock
+socket                          	= /var/lib/mysql/mysql.sock
 port                            	= 3306
-pid-file                        	= /var/lib/mariadb/mysql.pid
+pid-file                        	= /var/lib/mysql/mysql.pid
 server_id                       	= 100
 gtid_domain_id                  	= 1
 character_set_server            	= utf8
@@ -66,12 +66,12 @@ max_heap_table_size             	= {{ [(ansible_memtotal_mb/512),16]|max|round|i
 #binlog_format                   	= STATEMENT
 #binlog_row_image                	= FULL
 #sync_binlog                     	= 0
-#log_bin                         	= /var/lib/mariadb/log/mariadb-bin
-#log_bin_index                   	= /var/lib/mariadb/log/mariadb-bin.index
+#log_bin                         	= /var/lib/mysql/log/mariadb-bin
+#log_bin_index                   	= /var/lib/mysql/log/mariadb-bin.index
 #expire_logs_days                	= 3
-log_error                       	= /var/lib/mariadb/log/mariadb-error.log
+log_error                       	= /var/lib/mysql/log/mariadb-error.log
 slow_query_log                  	= ON
-slow_query_log_file             	= /var/lib/mariadb/log/mariadb-slow.log
+slow_query_log_file             	= /var/lib/mysql/log/mariadb-slow.log
 log_queries_not_using_indexes   	= OFF
 log_warnings                    	= 2
 log_slow_verbosity              	= query_plan,innodb,explain
