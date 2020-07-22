@@ -86,6 +86,31 @@
   - name: "Install MariaDB Xpand Plugin"
     yum:
       name: MariaDB-xpand-engine
+  - name: Insert a line at the end of a file.
+    blockinfile:
+     dest: /etc/my.cnf.d/xpand.cnf
+     block: |
+      plugin-maturity=beta
+      xpand_hosts=10.0.2.11
+      xpand_port=4799
+      xpand_username=root
+  - name: "Creating MySQL Log Directory"
+    file:
+      path: /var/log/mysql
+      state: directory
+      mode: 0755
+      owner: mysql
+      group: mysql
+
+  - name: "Creating/Updating server.cnf"
+    template:
+      src: templates/general_xpand.j2
+      dest: /etc/my.cnf.d/server.cnf
+
+  - name: "Installing/Updating timeouts.conf Template"
+    template:
+      src: templates/timeouts.j2
+      dest: /etc/systemd/system/mariadb.service.d/timeouts.conf
       
 - hosts: xpand
   become: True
