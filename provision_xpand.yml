@@ -79,6 +79,10 @@
     shell: /tmp/mariadb_es_repo_setup --token={{ customer_token }} --apply --mariadb-server-version="10.5"
   - name: "Reloading Systemd"
     command: systemctl daemon-reload
+  
+  - name: "Install MariaDB Server"
+    yum:
+      name: mariadb-server
 
 - hosts: xpand
   become: True
