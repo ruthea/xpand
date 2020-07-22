@@ -96,6 +96,7 @@
     vars:
       packages:
       - bzip2
+      - http://mirror.centos.org/centos/7/os/x86_64/Packages/libdwarf-tools-20130207-4.el7.x86_64.rpm
 
   - name: "Downloading Xpand"
     get_url:
