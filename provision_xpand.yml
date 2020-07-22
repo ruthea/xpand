@@ -18,7 +18,6 @@
   - name: "Install EPEL Release"
     package:
       name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      state: latest
       
   - name: "Removing mariadb-libs"
     yum:
