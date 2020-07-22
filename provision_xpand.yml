@@ -83,7 +83,10 @@
   - name: "Install MariaDB Server"
     yum:
       name: mariadb-server
-
+  - name: "Install MariaDB Xpand Plugin"
+    yum:
+      name: MariaDB-xpand-engine
+      
 - hosts: xpand
   become: True
   become_user: root
@@ -110,4 +113,12 @@
     
   - name: Uncompressing Xpand binaries
     command: tar xvf /tmp/xpand.tar.bz2 -C /tmp
+
+  - name: "Startng Xpand"
+    command: chdir=/tmp/{{ xpand_dir }} ./clxnode_install.py --yes
    
+  - name: "Setting Xpand MYSQL Port"
+    command: sed -i 's/#MYSQL_PORT=3306/MYSQL_PORT=4799/g' /etc/clustrix/clxnode.conf
+    
+  - name: "Restarting Xpand"
+    command: /opt/clustrix/bin/clx dbrestart
