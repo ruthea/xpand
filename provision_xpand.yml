@@ -120,5 +120,3 @@
   - name: "Setting Xpand MYSQL Port"
     command: sed -i 's/#MYSQL_PORT=3306/MYSQL_PORT=4799/g' /etc/clustrix/clxnode.conf
     
-  - name: "Restarting Xpand"
-    command: /opt/clustrix/bin/clx dbrestart
