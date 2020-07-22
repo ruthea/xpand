@@ -75,10 +75,12 @@
     pip:
       name: PyMySQL
 
-
 - hosts: "xpand"
   become: True
   become_user: root
+  vars_files:
+    - 'variables.yml'
+    - '/tmp/file_variables.yml'
 
   tasks:
   - name: Installing Some Basic Packages
@@ -88,16 +90,7 @@
     vars:
       packages:
       - nano
-
-
-- hosts: "xpand"
-  become: True
-  become_user: root
-  vars_files:
-    - 'variables.yml'
-    - '/tmp/file_variables.yml'
-
-  tasks:
+      
   - name: "Download MariaDB ES Repo setup"
     get_url:
       url: "{{ mariadbrepo_url }}"
@@ -238,56 +231,4 @@
     
   - name: Uncompressing Xpand binaries
     command: tar xvf /tmp/xpand.tar.bz2 -C /tmp
-    
-  - name: "Startng Xpand"
-    command: chdir=/tmp/{{ xpand_dir }} ./clxnode_install.py --yes
-
-  - name: "Granting remote access"
-    command: mysql -e "grant all on *.* to 'root'@'%';"
-
-  - name: "Setting Xpand MYSQL Port"
-    command: sed -i 's/#MYSQL_PORT=3306/MYSQL_PORT=4799/g' /etc/clustrix/clxnode.conf
-    
-  - name: "Restarting Xpand"
-    command: /opt/clustrix/bin/clx dbrestart
-
-- hosts: loadtest
-  become: True
-  become_user: root
-
-  tasks:  
-  - name: "Copy in sysbench_helper"
-    template:
-      src: /tmp/standard_replication/sysbench/sysbench_helper
-      dest: /tmp/sysbench_helper
-  - name: "Copy in mdb sysbench_helper"
-    template:
-      src: /tmp/standard_replication/sysbench/mdb
-      dest: /tmp/mdb
-  - name: "Copy in xpand sysbench_helper"
-    template:
-      src: /tmp/standard_replication/sysbench/xpand
-      dest: /tmp/xpand
-
-- hosts: "xpand1"
-  become: True
-  become_user: root
-  vars_files:
-    - 'variables.yml'
-    - '/tmp/file_variables.yml'
-
-  tasks:  
-  - name: "Copy in xpand license"
-    template:
-      src: /tmp/xpand.key
-      dest: /tmp/xpand.key
-  - name: "Copy in xpand add license script"
-    template:
-      src: /tmp/addlicense.sh
-      dest: /tmp/addlicense.sh
-      
-  - name: "Install key"
-    command: sh /tmp/addlicense.sh
-    
-  - name: "Add xpand1 and xpand2 to cluster"
-    command: mysql -e "ALTER CLUSTER ADD '10.0.3.11', '10.0.4.11';"
+   
