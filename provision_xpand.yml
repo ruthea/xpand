@@ -14,12 +14,12 @@
     vars:
       packages:
       - libselinux-python
+  
+  - name: "Install EPEL Release"
+    package:
+      name: 'epel-release'
+      state: latest
       
-  - name: "Installing epel repo"
-    shell: rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    args:
-      warn: False
-
   - name: "Removing mariadb-libs"
     yum:
       name: 'mariadb-libs'
