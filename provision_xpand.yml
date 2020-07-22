@@ -102,7 +102,7 @@
       owner: mysql
       group: mysql
       
-   - name: "Creating mariadb Log Directory"
+  - name: "Creating mariadb Log Directory"
     file:
       path: /var/log/mariadb
       state: directory
