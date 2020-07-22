@@ -101,6 +101,14 @@
       mode: 0755
       owner: mysql
       group: mysql
+      
+   - name: "Creating mariadb Log Directory"
+    file:
+      path: /var/log/mariadb
+      state: directory
+      mode: 0755
+      owner: mysql
+      group: mysql
 
   - name: "Creating/Updating server.cnf"
     template:
