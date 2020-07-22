@@ -149,10 +149,13 @@
 
   - name: "Startng Xpand"
     command: chdir=/tmp/{{ xpand_dir }} ./clxnode_install.py --yes
-   
+ 
   - name: "Setting Xpand MYSQL Port"
     command: sed -i 's/#MYSQL_PORT=3306/MYSQL_PORT=4799/g' /etc/clustrix/clxnode.conf
 
   - name: "Restarting Xpand"
     command: /opt/clustrix/bin/clx dbrestart
+    
+  - name: "Granting remote access"
+    command: mysql -uroot -h 127.0.0.1 -P4799 -e "grant all on *.* to 'root'@'%';"
     
