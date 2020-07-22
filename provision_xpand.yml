@@ -30,26 +30,6 @@
       policy: targeted
       state: permissive
 
-  - name: "Setting Soft Open File Limits"
-    pam_limits:
-      domain: '*'
-      limit_type: soft
-      limit_item: nofile
-      value: 65535
-
-  - name: "Setting Hard Open File Limits"
-    pam_limits:
-      domain: '*'
-      limit_type: hard
-      limit_item: nofile
-      value: 65535
-
-  - name: "Adjusting OS Swappiness"
-    sysctl:
-      name: vm.swappiness
-      value: 1
-      state: present
-
   - name: "Upgrading All Packages"
     yum:
       name: '*'
@@ -63,7 +43,6 @@
       packages:
       - wget
       - nano
-      - epel-release
       - pigz
       - socat
       - python2
@@ -83,14 +62,7 @@
     - '/tmp/file_variables.yml'
 
   tasks:
-  - name: Installing Some Basic Packages
-    yum:
-      name: "{{ packages }}"
-      state: present
-    vars:
-      packages:
-      - nano
-      
+
   - name: "Download MariaDB ES Repo setup"
     get_url:
       url: "{{ mariadbrepo_url }}"
@@ -106,105 +78,8 @@
 
   - name: "Install MariaDB ES Repo"
     shell: /tmp/mariadb_es_repo_setup --token={{ customer_token }} --apply --mariadb-server-version="10.5"
-
-  - name: "Installing MariaDB Server"
-    yum:
-      name: "{{ packages }}"
-      state: present
-    vars:
-      packages:
-      - MariaDB-xpand-engine
-
-  - name: Insert a line at the end of a file.
-    blockinfile:
-     dest: /etc/my.cnf.d/xpand.cnf
-     block: |
-      plugin-maturity=beta
-      xpand_hosts=10.0.2.11,10.0.3.11,10.0.4.11
-      xpand_port=4799
-      xpand_username=root
-
-  - name: "Creating MySQL Log Directory"
-    file:
-      path: /var/log/mysql
-      state: directory
-      mode: 0755
-      owner: mysql
-      group: mysql
-
-  - name: "Creating/Updating server.cnf"
-    template:
-      src: templates/general_xpand.j2
-      dest: /etc/my.cnf.d/server.cnf
-
-  - name: "Installing/Updating timeouts.conf Template"
-    template:
-      src: templates/timeouts.j2
-      dest: /etc/systemd/system/mariadb.service.d/timeouts.conf
-
-  - name: "Enabling MariaDB Server"
-    systemd:
-      name: mariadb
-      state: restarted
-      enabled: yes
-  - name: "Removing 'Test' Database If Exists"
-    mysql_db:
-      name: test
-      state: absent
-      login_unix_socket: '{{ mariadb_socket }}'
-
-  - name: "Adding {{ demo_user }}@localhost User To Database"
-    mysql_user:
-      name: '{{ demo_user }}'
-      host: 'localhost'
-      password: '{{ demo_pass }}'
-      update_password: on_create
-      priv: '*.*:SELECT'
-      state: present
-      login_unix_socket: '{{ mariadb_socket }}'
-    no_log: true
-
-  - name: "Adding {{ demo_user }}@10.% User To Database"
-    mysql_user:
-      name: '{{ demo_user }}'
-      host: '10.%'
-      password: '{{ demo_pass }}'
-      update_password: on_create
-      priv: '*.*:SELECT'
-      state: present
-      login_unix_socket: '{{ mariadb_socket }}'
-    no_log: true
-
-  - name: "Adding '{{ repli_user }}'@'%'"
-    mysql_user:
-      name: '{{ repli_user }}'
-      host: '%'
-      password: '{{ repli_pass }}'
-      update_password: on_create
-      priv: '*.*:REPLICATION CLIENT,REPLICATION SLAVE'
-      state: present
-      login_unix_socket: '{{ mariadb_socket }}'
-    no_log: true
-
-  - name: "Adding '{{ repli_user }}'@'localhost'"
-    mysql_user:
-      name: '{{ repli_user }}'
-      host: 'localhost'
-      password: '{{ repli_pass }}'
-      update_password: on_create
-      priv: '*.*:REPLICATION CLIENT,REPLICATION SLAVE'
-      state: present
-      login_unix_socket: '{{ mariadb_socket }}'
-    no_log: true
-
   - name: "Reloading Systemd"
     command: systemctl daemon-reload
-
-  - name: "Starting MariaDB on all nodes"
-    systemd:
-      name: mysql
-      enabled: yes
-      state: restarted
 
 - hosts: xpand
   become: True
