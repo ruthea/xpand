@@ -29,26 +29,6 @@
       policy: targeted
       state: permissive
 
-  - name: "Setting Soft Open File Limits"
-    pam_limits:
-      domain: '*'
-      limit_type: soft
-      limit_item: nofile
-      value: 65535
-
-  - name: "Setting Hard Open File Limits"
-    pam_limits:
-      domain: '*'
-      limit_type: hard
-      limit_item: nofile
-      value: 65535
-
-  - name: "Adjusting OS Swappiness"
-    sysctl:
-      name: vm.swappiness
-      value: 1
-      state: present
-      
   - name: "Upgrading All Packages"
     yum:
       name: '*'
@@ -106,6 +86,7 @@
   - name: "Install MariaDB Xpand Plugin"
     yum:
       name: MariaDB-xpand-engine
+      
   - name: Insert a line at the end of a file.
     blockinfile:
      dest: /etc/my.cnf.d/xpand.cnf
@@ -114,6 +95,7 @@
       xpand_hosts=10.0.2.11
       xpand_port=4799
       xpand_username=root
+      
   - name: "Creating MySQL Log Directory"
     file:
       path: /var/log/mysql
@@ -139,6 +121,26 @@
     template:
       src: templates/timeouts.j2
       dest: /etc/systemd/system/mariadb.service.d/timeouts.conf
+
+  - name: "Setting Soft Open File Limits"
+    pam_limits:
+      domain: '*'
+      limit_type: soft
+      limit_item: nofile
+      value: 65535
+
+  - name: "Setting Hard Open File Limits"
+    pam_limits:
+      domain: '*'
+      limit_type: hard
+      limit_item: nofile
+      value: 65535
+
+  - name: "Adjusting OS Swappiness"
+    sysctl:
+      name: vm.swappiness
+      value: 1
+      state: present
       
 - hosts: xpand
   become: True
@@ -167,3 +169,8 @@
   - name: Uncompressing Xpand binaries
     command: tar xvf /tmp/xpand.tar.bz2 -C /tmp
     
+  - name: "Startng Xpand"
+    command: chdir=/tmp/{{ xpand_dir }} ./clxnode_install.py --mysql-port=4799 --yes
+
+  - name: "Granting remote access"
+    command: mysql -uroot -P4799 -e "grant all on *.* to 'root'@'%';"
