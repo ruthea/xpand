@@ -172,5 +172,22 @@
   - name: "Startng Xpand"
     command: chdir=/tmp/{{ xpand_dir }} ./clxnode_install.py --mysql-port=4799 --yes
 
+  - name: "Setting Soft Open File Limits"
+    pam_limits:
+      domain: '*'
+      limit_type: soft
+      limit_item: nofile
+      value: 65535
+
+  - name: "Setting Hard Open File Limits"
+    pam_limits:
+      domain: '*'
+      limit_type: hard
+      limit_item: nofile
+      value: 65535
+
   - name: "Granting remote access"
     command: mysql -uroot -P4799 -e "grant all on *.* to 'root'@'%';"
+    
+  - name: "Restarting Xpand"
+    command: /opt/clustrix/bin/clx dbrestart
