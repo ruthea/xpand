@@ -29,6 +29,26 @@
       policy: targeted
       state: permissive
 
+  - name: "Setting Soft Open File Limits"
+    pam_limits:
+      domain: '*'
+      limit_type: soft
+      limit_item: nofile
+      value: 65535
+
+  - name: "Setting Hard Open File Limits"
+    pam_limits:
+      domain: '*'
+      limit_type: hard
+      limit_item: nofile
+      value: 65535
+
+  - name: "Adjusting OS Swappiness"
+    sysctl:
+      name: vm.swappiness
+      value: 1
+      state: present
+      
   - name: "Upgrading All Packages"
     yum:
       name: '*'
